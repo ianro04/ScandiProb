@@ -17,8 +17,8 @@ to output the probability between 0 and 1 that a given text is Norwegian or not.
 
 <h2> Part B: Training for Danish </h2>
 
-  - [ ] Properly train the model on extensive labeled corpora of Norwegian, Swedish, and Danish.
-  - [ ] Adjust the classification head to now return an independent probability for Danish in addition to existing classes. Note that Danish is likely the hardest class to implement properly, due to significant overlap with Norwegian Bokmål.
+  - [X] Properly train the model on extensive labeled corpora of Norwegian, Swedish, and Danish.
+  - [X] Adjust the classification head to now return an independent probability for Danish in addition to existing classes. Note that Danish is likely the hardest class to implement properly, due to significant overlap with Norwegian Bokmål.
 
 <h2> Part A: Options for Expansion </h2>
 Complete two of the following:
