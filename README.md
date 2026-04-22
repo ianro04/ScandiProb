@@ -7,13 +7,13 @@ Completed in iterations from Part D to Part A, as follows.
 
   - [X] Load ScandiBERT into Kaggle Notebooks. Attach a classification head to it, using a sigmoid function
 to output the probability between 0 and 1 that a given text is Norwegian or not.
-  - [X] Implement a bare bones negative class with just regex and an equation of (1 - pn).
+  - [X] Implement a bare bones negative class with just regex and an equation of (1 - p<sub>n</sub>).
   - [X] Run tests to see how successful the model is with just pretraining and just one language.
 <h2> Part C: Training for Norwegian, Swedish, and the Negative Class </h2>
   
-  - [ ] Properly train the model on limited labeled corpora of labeled Norwegian, Swedish, and a limited non-Scandinavian corpus.
-  - [ ] Adjust the classification head to now return three independent probabilities for whether a text is in Norwegian, Swedish, or non-Scandinavian.
-  - [ ] Run new tests for all three classes.
+  - [X] Properly train the model on limited labeled corpora of labeled Norwegian, Swedish, and a limited non-Scandinavian corpus.
+  - [X] Adjust the classification head to now return three independent probabilities for whether a text is in Norwegian, Swedish, or non-Scandinavian.
+  - [X] Run new tests for all three classes.
 
 <h2> Part B: Training for Danish </h2>
 
@@ -28,5 +28,5 @@ Complete two of the following:
 is only pretrained on Bokmål and Nynorsk and does not label them as part of Norwegian at-large. NorDial is a corpus of written Norwegian dialects and will help to make the Norwegian class as accurate as possible.
   - [ ] After the model outputs the probabilities, write a function that goes character-bycharacter and adds or removes language score
 based on linguistic heuristics, such as Danish having -d at the end of words that gets dropped off in Norwegian Bokmål. Does this
-meaningfully improve accuracy? This may be necessary to some extent to distinguish between Danish and Bokmål.
+meaningfully improve accuracy? This may be *necessary* to some extent to distinguish between Danish and Bokmål.
   - [ ] Implement classes and probabilities for the insular Scandinavian languages of Icelandic and Faroese, as ScandiBERT is pretrained on them.
