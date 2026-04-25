@@ -26,7 +26,7 @@ Complete two of the following:
   - [ ] Implement a proper UI for the final program. Have the user input/upload their text and have it output a bar graph for the language probabilities.
   - [ ] Retrain the Norwegian class to have multiple subclasses for Bokmål, Nynorsk, and "Miscellaneous Norwegian Dialect". ScandiBERT
 is only pretrained on Bokmål and Nynorsk and does not label them as part of Norwegian at-large. NorDial is a corpus of written Norwegian dialects and will help to make the Norwegian class as accurate as possible.
-  - [ ] After the model outputs the probabilities, write a function that goes character-bycharacter and adds or removes language score
+  - [X] After the model outputs the probabilities, write a function that goes character-by-character and adds or removes language score
 based on linguistic heuristics, such as Danish having -d at the end of words that gets dropped off in Norwegian Bokmål. Does this
 meaningfully improve accuracy? This may be *necessary* to some extent to distinguish between Danish and Bokmål.
   - [ ] Implement classes and probabilities for the insular Scandinavian languages of Icelandic and Faroese, as ScandiBERT is pretrained on them.
