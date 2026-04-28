@@ -3,4 +3,4 @@
 	url = https://huggingface.co/ianro04/scandiprob
 [submodule "HF-full-demo"]
 	path = HF-full-demo
-	url = https://huggingface.co/spaces/ianro04/ScandiProb
+	url = https://huggingface.co/spaces/ianro04/scandiprob
