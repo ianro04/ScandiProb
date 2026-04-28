@@ -1,0 +1,3 @@
+[submodule "HF-model-raw"]
+	path = HF-model-raw
+	url = https://huggingface.co/ianro04/scandiprob
