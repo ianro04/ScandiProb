@@ -1,0 +1,6 @@
+torch
+transformers
+sentencepiece
+gradio
+pypdf
+python-docx
