@@ -3,13 +3,15 @@ import re
 import torch
 import pypdf
 import gradio as gr
+from ftfy import TextFixerConfig, fix_text
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from docx import Document
 
 HF_TOKEN = os.environ.get("HF_TOKEN")
 repo_id = "ianro04/ScandiProb"
 
-labels = ["Norwegian", "Swedish", "Danish", "Non-Scandinavian"]
+LANG_LABELS = ["Norwegian", "Swedish", "Danish", "Non-Scandinavian"]
+FTFY_CONFIG=TextFixerConfig(uncurl_quotes=False)
 
 print("Loading model and tokenizer...")
 tokenizer = AutoTokenizer.from_pretrained(repo_id, token=HF_TOKEN)
@@ -19,13 +21,13 @@ model.eval()
 def read_file(file_path): # Alt input method for Space
     if file_path is None:
         return ""
-    if file_path.endswith((".txt", ".md")):
-        with open(file_path, "r", encoding="utf-8") as f:
+    if file_path.lower().endswith((".txt", ".md", ".rtf")):
+        with open(file_path, "r", encoding="utf-8", errors="replace") as f:
             return f.read()
-    elif file_path.endswith(".docx"):
+    elif file_path.lower().endswith(".docx"):
         doc = Document(file_path)
         return "\n".join([p.text for p in doc.paragraphs])
-    elif file_path.endswith(".pdf"):
+    elif file_path.lower().endswith(".pdf"):
         reader = pypdf.PdfReader(file_path)
         return "\n".join([page.extract_text() or "" for page in reader.pages])
     return ""
@@ -82,7 +84,7 @@ def da_no_cross_skew(text):
 def ScandiProb(text):
     text = text.strip()
     if not text:
-        return "None", {label: 0.0 for label in labels}
+        return "None", {label: 0.0 for label in LANG_LABELS}
         
     inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=512)
     
@@ -96,7 +98,7 @@ def ScandiProb(text):
     
     final_probs = {}
     
-    for i, label in enumerate(labels):
+    for i, label in enumerate(LANG_LABELS):
         prob = raw_probs[i].item()
         
         if label in ["Norwegian", "Swedish", "Danish"]:
@@ -122,7 +124,7 @@ def ScandiProb(text):
 
 def classify(text, file):
     if file is not None:
-        text = read_file(file)
+        text = fix_text(read_file(file), config=FTFY_CONFIG)
     return ScandiProb(text)
 
 with gr.Blocks() as demo:
@@ -136,7 +138,7 @@ with gr.Blocks() as demo:
             with gr.Tab("Text Input"):
                 input_text = gr.Textbox(lines=5, placeholder="Enter text...", label="Input Text")
             with gr.Tab("File Upload"):
-                input_file = gr.File(file_types=[".txt", ".docx", ".pdf", ".md"])
+                input_file = gr.File(file_types=[".txt", ".docx", ".pdf", ".md", ".rtf"])
             submit_btn = gr.Button("Classify")
         
         with gr.Column():
