@@ -1,6 +1,9 @@
+ftfy
+gradio
+pypdf
+python-docx
 torch
 transformers
 sentencepiece
-gradio
 pypdf
 python-docx
