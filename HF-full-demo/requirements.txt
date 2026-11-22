@@ -5,5 +5,3 @@ python-docx
 torch
 transformers
 sentencepiece
-pypdf
-python-docx
