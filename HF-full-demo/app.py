@@ -3,13 +3,15 @@ import re
 import torch
 import pypdf
 import gradio as gr
+from ftfy import TextFixerConfig, fix_text
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from docx import Document
 
 HF_TOKEN = os.environ.get("HF_TOKEN")
 repo_id = "ianro04/ScandiProb"
 
-labels = ["Norwegian", "Swedish", "Danish", "Non-Scandinavian"]
+LANG_LABELS = ["Norwegian", "Swedish", "Danish", "Non-Scandinavian"]
+FTFY_CONFIG=TextFixerConfig(uncurl_quotes=False)
 
 print("Loading model and tokenizer...")
 tokenizer = AutoTokenizer.from_pretrained(repo_id, token=HF_TOKEN)
@@ -82,7 +84,7 @@ def da_no_cross_skew(text):
 def ScandiProb(text):
     text = text.strip()
     if not text:
-        return "None", {label: 0.0 for label in labels}
+        return "None", {label: 0.0 for label in LANG_LABELS}
         
     inputs = tokenizer(text, return_tensors="pt", truncation=True, max_length=512)
     
@@ -96,7 +98,7 @@ def ScandiProb(text):
     
     final_probs = {}
     
-    for i, label in enumerate(labels):
+    for i, label in enumerate(LANG_LABELS):
         prob = raw_probs[i].item()
         
         if label in ["Norwegian", "Swedish", "Danish"]:
@@ -122,7 +124,7 @@ def ScandiProb(text):
 
 def classify(text, file):
     if file is not None:
-        text = read_file(file)
+        text = fix_text(read_file(file), config=FTFY_CONFIG)
     return ScandiProb(text)
 
 with gr.Blocks() as demo:
