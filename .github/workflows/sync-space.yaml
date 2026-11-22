@@ -23,9 +23,6 @@ jobs:
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
-      
-      - name: Install git-subtree
-        run: sudo apt-get update && sudo apt-get install -y git-subtree
 
       - name: Sync to HF Space
         if: steps.changed.outputs.changed == 'true'
