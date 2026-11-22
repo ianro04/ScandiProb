@@ -21,13 +21,13 @@ model.eval()
 def read_file(file_path): # Alt input method for Space
     if file_path is None:
         return ""
-    if file_path.endswith((".txt", ".md")):
-        with open(file_path, "r", encoding="utf-8") as f:
+    if file_path.lower().endswith((".txt", ".md", ".rtf")):
+        with open(file_path, "r", encoding="utf-8", errors="replace") as f:
             return f.read()
-    elif file_path.endswith(".docx"):
+    elif file_path.lower().endswith(".docx"):
         doc = Document(file_path)
         return "\n".join([p.text for p in doc.paragraphs])
-    elif file_path.endswith(".pdf"):
+    elif file_path.lower().endswith(".pdf"):
         reader = pypdf.PdfReader(file_path)
         return "\n".join([page.extract_text() or "" for page in reader.pages])
     return ""
@@ -138,7 +138,7 @@ with gr.Blocks() as demo:
             with gr.Tab("Text Input"):
                 input_text = gr.Textbox(lines=5, placeholder="Enter text...", label="Input Text")
             with gr.Tab("File Upload"):
-                input_file = gr.File(file_types=[".txt", ".docx", ".pdf", ".md"])
+                input_file = gr.File(file_types=[".txt", ".docx", ".pdf", ".md", ".rtf"])
             submit_btn = gr.Button("Classify")
         
         with gr.Column():
