@@ -1,11 +1,15 @@
 import os
 import re
-import torch
+from pathlib import Path
+
 import pypdf
+import torch
 import gradio as gr
+
 from ftfy import TextFixerConfig, fix_text
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from docx import Document
+from striprtf.striprtf import rtf_to_text
 
 HF_TOKEN = os.environ.get("HF_TOKEN")
 repo_id = "ianro04/ScandiProb"
@@ -21,13 +25,17 @@ model.eval()
 def read_file(file_path): # Alt input method for Space
     if file_path is None:
         return ""
-    if file_path.lower().endswith((".txt", ".md", ".rtf")):
+    target_suffix = Path(file_path).suffix.lower()
+    if target_suffix in [".txt", ".md"]:
         with open(file_path, "r", encoding="utf-8", errors="replace") as f:
             return f.read()
-    elif file_path.lower().endswith(".docx"):
+    elif target_suffix == ".rtf":
+        with open(file_path, "r", encoding="utf-8", errors="replace") as f:
+            return rtf_to_text(f.read())
+    elif target_suffix == ".docx":
         doc = Document(file_path)
         return "\n".join([p.text for p in doc.paragraphs])
-    elif file_path.lower().endswith(".pdf"):
+    elif target_suffix == ".pdf":
         reader = pypdf.PdfReader(file_path)
         return "\n".join([page.extract_text() or "" for page in reader.pages])
     return ""
