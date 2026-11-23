@@ -148,4 +148,4 @@ with gr.Blocks() as demo:
     submit_btn.click(fn=classify, inputs=[input_text, input_file], outputs=[top_prediction, output_labels])
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(theme=gr.themes.Ocean())
