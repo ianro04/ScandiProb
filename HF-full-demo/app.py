@@ -14,8 +14,9 @@ from striprtf.striprtf import rtf_to_text
 HF_TOKEN = os.environ.get("HF_TOKEN")
 repo_id = "ianro04/ScandiProb"
 
-LANG_LABELS = ["Norwegian", "Swedish", "Danish", "Non-Scandinavian"]
 FTFY_CONFIG=TextFixerConfig(uncurl_quotes=False)
+LANG_LABELS = ["Norwegian", "Swedish", "Danish", "Non-Scandinavian"]
+SCANDI_CHARS = ['å', 'ä', 'ö', 'æ', 'ø', 'Å', 'Ä', 'Ö', 'Æ', 'Ø']
 
 print("Loading model and tokenizer...")
 tokenizer = AutoTokenizer.from_pretrained(repo_id, token=HF_TOKEN)
@@ -144,7 +145,19 @@ with gr.Blocks() as demo:
     with gr.Row():
         with gr.Column():
             with gr.Tab("Text Input"):
-                input_text = gr.Textbox(lines=5, placeholder="Enter text...", label="Input Text")
+                input_text = gr.Textbox(lines=5, placeholder="Enter text...", label="Input Text", elem_id="input_text")
+                with gr.Row():
+                    for ch in SCANDI_CHARS:
+                        ch_button = gr.Button(ch, size="sm", min_width=40)
+                        ch_button.click(
+                            fn=None,
+                            js=f"""() => {{
+                                const el = document.querySelector('#input_text textarea');
+                                el.setRangeText('{ch}', el.selectionStart, el.selectionEnd, 'end');
+                                el.dispatchEvent(new Event('input', {{ bubbles: true }}));
+                                el.focus();
+                            }}""",
+                        )
             with gr.Tab("File Upload"):
                 input_file = gr.File(file_types=[".txt", ".docx", ".pdf", ".md", ".rtf"])
             submit_btn = gr.Button("Classify")

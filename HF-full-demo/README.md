@@ -10,8 +10,13 @@ pinned: false
 license: agpl-3.0
 short_description: Data-constrained hybrid multi-label NO/SE/DA classifier
 models:
-    - vesteinn/ScandiBERT
     - ianro04/ScandiProb
+tags:
+    - language-identification
+    - text-classification
+    - norwegian
+    - swedish
+    - danish
 ---
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
